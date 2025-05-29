@@ -1,8 +1,11 @@
 import { http } from 'msw'
+import { projectHandlers } from './project-handlers';
 
 let users: any = [
   { email: 'jasmin@gmail.com', password: '123456', userName: 'Jasmin' }
 ]
+
+export const projects = []
 
 export const updatePassword = (email: string, newPassword: string) => {
   const user = users.find(u => u.email === email);
@@ -69,5 +72,7 @@ export const handlers = [
     }
 
     return new Response(JSON.stringify({ message: 'Password updated successfully' }), { status: 200 });
-  })
+  }),
+
+  ...projectHandlers,
 ]

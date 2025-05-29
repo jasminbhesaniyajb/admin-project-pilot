@@ -18,6 +18,8 @@ import FormInput from "../form/form-input";
 import ErrorMessage from "../form/error-message";
 import { projectFormSchema } from "../../validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createProject, getProjectDetailsById } from "../../api/project";
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
@@ -31,7 +33,7 @@ const ProjectForm: React.FC = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
   } = useForm<ProjectData>({
     resolver: zodResolver(projectFormSchema),
@@ -60,22 +62,9 @@ const ProjectForm: React.FC = () => {
   const getProjectDetails = async (projectId: string) => {
     setLoading(true);
     try {
-      // Replace with actual API call
-      const projectDetails: ProjectData = {
-        id: projectId,
-        customer: "1",
-        referenceNumber: "REF-2024-001",
-        projectName: "Website Redesign",
-        projectNumber: "PRJ-001",
-        areaLocation: "Downtown",
-        address: "123 Main Street, City",
-        dueDate: "2024-12-31",
-        contact: "john.doe@example.com",
-        manager: "1",
-        staff: "1",
-        status: "in-progress",
-        email: "project@example.com",
-      };
+      const response = await getProjectDetailsById(projectId);
+      console.log('response',response?.data);
+      const projectDetails: ProjectData = response?.data
 
       setValue("customer", projectDetails.customer);
       setValue("referenceNumber", projectDetails.referenceNumber);
@@ -83,7 +72,8 @@ const ProjectForm: React.FC = () => {
       setValue("projectNumber", projectDetails.projectNumber);
       setValue("areaLocation", projectDetails.areaLocation);
       setValue("address", projectDetails.address);
-      setValue("dueDate", projectDetails.dueDate);
+      // setValue("dueDate", projectDetails.dueDate);
+       setValue("dueDate", dayjs(projectDetails.dueDate) as any);
       setValue("contact", projectDetails.contact);
       setValue("manager", projectDetails.manager);
       setValue("staff", projectDetails.staff);
@@ -97,29 +87,24 @@ const ProjectForm: React.FC = () => {
   };
 
   const onSubmit = async (data: ProjectData) => {
-    console.log('data', data);
-    // setLoading(true);
-    // try {
-    //   const formattedData = {
-    //     ...data,
-    //     dueDate: data.dueDate ? data.dueDate : null,
-    //   };
+    console.log("data", data);
+    try {
+      const payload = {
+        ...data,
+      };
 
-    //   if (isEditMode) {
-    //     console.log("Updating project:", { id, ...formattedData });
-    //     message.success("Project updated successfully!");
-    //   } else {
-    //     console.log("Creating new project:", formattedData);
-    //     message.success("Project created successfully!");
-    //   }
+      if (isEditMode) {
+        console.log("Updating project:", { id, ...payload });
+        message.success("Project updated successfully!");
+      } else {
+        await createProject(payload);
+        message.success("Project created successfully!");
+      }
 
-    //   navigate("/projects");
-    // } catch (error) {
-    //   console.error("Error saving project:", error);
-    //   message.error("Failed to save project");
-    // } finally {
-    //   setLoading(false);
-    // }
+      navigate("/projects");
+    } catch (error: any) {
+      message.error(error);
+    }
   };
 
   const handleCancel = () => {
@@ -375,7 +360,7 @@ const ProjectForm: React.FC = () => {
             <Button
               type="primary"
               htmlType="submit"
-              loading={loading}
+              loading={isSubmitting}
               style={{ marginRight: 8, minWidth: 120 }}
             >
               {isEditMode ? "Update" : "Add Now"}

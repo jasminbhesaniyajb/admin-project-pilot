@@ -1,96 +1,125 @@
 import React, { useState, useEffect } from "react";
-import { Button, Space, Tag, Card } from "antd";
+import { Button, Space, Tag, message, Card, Modal } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import DataTable from "../../../components/data-table";
 import BaseButton from "../../../components/form/base-button";
 import { useNavigate } from "react-router-dom";
-
-interface User {
-  key: string;
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: "active" | "inactive";
-  createdAt: string;
-}
+import { deleteProject, getProjectList } from "../../../api/project";
+import type { ProjectData } from "../../../types";
 
 const Projects: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [projectsList, setProjectsList] = useState<ProjectData[]>([]);
+
+  const fetchProjects = async () => {
+    setLoading(true);
+    try {
+      const response = await getProjectList();
+
+      setProjectsList(response?.data);
+    } catch (error: any) {
+      message.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      const mockUsers: User[] = Array.from({ length: 50 }, (_, i) => ({
-        key: `user-${i}`,
-        id: i + 1,
-        name: `User ${i + 1}`,
-        email: `user${i + 1}@example.com`,
-        role: i % 3 === 0 ? "Admin" : i % 3 === 1 ? "Editor" : "Viewer",
-        status: i % 4 === 0 ? "inactive" : "active",
-        createdAt: new Date(Date.now() - Math.random() * 10000000000)
-          .toISOString()
-          .split("T")[0],
-      }));
-      setUsers(mockUsers);
-      setLoading(false);
-    }, 1000);
+    fetchProjects();
   }, []);
 
-  const handleEdit = (record: User) => {
-    console.log("Edit user:", record);
+  const handleEdit = (record: ProjectData) => {
+    navigate(`/projects/edit/${record.id}`);
   };
 
-  const handleDelete = (record: User) => {
+  const handleDelete = (record: ProjectData) => {
     console.log("Delete user:", record);
+    Modal.confirm({
+      title: "Are you sure you want to delete this project?",
+      content: `Project: ${record.projectName}`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          message.success("Project deleted successfully");
+          await deleteProject(record.id)
+          await fetchProjects();
+        } catch (error: any) {
+          message.error("Failed to delete project");
+        }
+      },
+    });
   };
 
-
-  const columns: ColumnsType<User> = [
+  const columns: ColumnsType<any> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      width: 80,
-      sorter: (a, b) => a.id - b.id,
+      title: "Project Name",
+      dataIndex: "projectName",
+      key: "projectName",
+      sorter: (a, b) => a.projectName.localeCompare(b.projectName),
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      sorter: (a, b) => a.name.localeCompare(b.name),
+      title: "Reference Number",
+      dataIndex: "referenceNumber",
+      key: "referenceNumber",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Project Number",
+      dataIndex: "projectNumber",
+      key: "projectNumber",
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-      render: (role: string) => {
-        const color =
-          role === "Admin" ? "red" : role === "Editor" ? "blue" : "green";
-        return <Tag color={color}>{role}</Tag>;
-      },
-      filters: [
-        { text: "Admin", value: "Admin" },
-        { text: "Editor", value: "Editor" },
-        { text: "Viewer", value: "Viewer" },
-      ],
-      onFilter: (value, record) => record.role === value,
+      title: "Customer",
+      dataIndex: "customer",
+      key: "customer",
     },
+    // {
+    //   title: "Email",
+    //   dataIndex: "email",
+    //   key: "email",
+    // },
+    {
+      title: "Manager",
+      dataIndex: "manager",
+      key: "manager",
+    },
+    {
+      title: "Staff",
+      dataIndex: "staff",
+      key: "staff",
+    },
+    {
+      title: "Contact",
+      dataIndex: "contact",
+      key: "contact",
+    },
+    {
+      title: "Area/Location",
+      dataIndex: "areaLocation",
+      key: "areaLocation",
+    },
+    // {
+    //   title: "Address",
+    //   dataIndex: "address",
+    //   key: "address",
+    // },
+    // {
+    //   title: "Due Date",
+    //   dataIndex: "dueDate",
+    //   key: "dueDate",
+    //   sorter: (a, b) =>
+    //     new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime(),
+    // },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status: string) => (
         <Tag color={status === "active" ? "green" : "red"}>
-          {status.toUpperCase()}
+          {status?.toUpperCase() || "N/A"}
         </Tag>
       ),
       filters: [
@@ -98,13 +127,6 @@ const Projects: React.FC = () => {
         { text: "Inactive", value: "inactive" },
       ],
       onFilter: (value, record) => record.status === value,
-    },
-    {
-      title: "Created At",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      sorter: (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
     {
       title: "Actions",
@@ -134,11 +156,15 @@ const Projects: React.FC = () => {
     <Card title="Projects Management">
       <div className="flex justify-between items-center mb-4">
         <div>Filter</div>
-        <BaseButton label="Add Project" type="primary" onClick={() => navigate("/projects/add")} />
+        <BaseButton
+          label="Add Project"
+          type="primary"
+          onClick={() => navigate("/projects/add")}
+        />
       </div>
       <DataTable
         columns={columns}
-        dataSource={users}
+        dataSource={projectsList}
         loading={loading}
         rowKey="key"
         defaultPageSize={20}
