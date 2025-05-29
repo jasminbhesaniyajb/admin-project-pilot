@@ -1,5 +1,6 @@
-import React from 'react';
-import { Input } from 'antd';
+import React from "react";
+import { Input } from "antd";
+import ErrorMessage from "./error-message";
 
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string | undefined;
@@ -7,25 +8,31 @@ interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   placeholder?: string;
   type?: string;
+  label?: string;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
   error,
   prefixIcon,
-  className = '',
-  placeholder = '',
-  type = 'text',
+  className = "",
+  placeholder = "",
+  type = "text",
+  label,
   ...rest
 }) => {
   return (
-    <Input
-      prefix={prefixIcon}
-      type={type}
-      placeholder={placeholder}
-      className={`${className}`}
-      status={error ? 'error' : ''}
-      {...rest}
-    />
+    <>
+      {label && <label>{label}</label>}
+      <Input
+        prefix={prefixIcon}
+        type={type}
+        placeholder={placeholder}
+        className={`${className}`}
+        status={error ? "error" : ""}
+        {...rest}
+      />
+      <ErrorMessage message={error} />
+    </>
   );
 };
 

@@ -4,3 +4,55 @@
   padding: 2rem;
   text-align: center;
 } */
+
+/* Common  */
+.form-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.form-button {
+  width: 100%;
+  border-radius: 8px;
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.form-link {
+  color: #1890ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-link:hover {
+  color: #40a9ff;
+  text-decoration: underline;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
