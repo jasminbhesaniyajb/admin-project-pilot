@@ -155,7 +155,7 @@ const Projects: React.FC = () => {
   return (
     <Card title="Projects Management">
       <div className="flex justify-between items-center mb-4">
-        <div>Filter</div>
+        <div></div>
         <BaseButton
           label="Add Project"
           type="primary"

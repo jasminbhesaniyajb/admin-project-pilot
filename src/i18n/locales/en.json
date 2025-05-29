@@ -1,0 +1,12 @@
+{
+  "login": "Login",
+  "logout": "Logout",
+  "projectPilot": "Project Pilot",
+  "dashboard": "Dashboard",
+  "projects": "Projects",
+  "estimates" : "Estimates",
+  "totalProjects": "Total Projects",
+  "activeProjects": "Active Projects",
+  "totalRevenue": "Total Revenue",
+  "pendingEstimates": "Pending Estimates"
+}

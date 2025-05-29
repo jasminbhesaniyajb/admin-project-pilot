@@ -18,7 +18,7 @@ import FormInput from "../form/form-input";
 import ErrorMessage from "../form/error-message";
 import { projectFormSchema } from "../../validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createProject, getProjectDetailsById } from "../../api/project";
+import { createProject, getProjectDetailsById, updateProject } from "../../api/project";
 import dayjs from "dayjs";
 
 const { Option } = Select;
@@ -94,7 +94,7 @@ const ProjectForm: React.FC = () => {
       };
 
       if (isEditMode) {
-        console.log("Updating project:", { id, ...payload });
+        await updateProject(id, payload);
         message.success("Project updated successfully!");
       } else {
         await createProject(payload);

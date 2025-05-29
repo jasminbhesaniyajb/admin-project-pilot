@@ -4,7 +4,8 @@ import './index.css'
 import App from './App'
 import '@ant-design/v5-patch-for-react-19'
 import { worker } from './mocks/browser'
-import 'antd/dist/reset.css';  
+import 'antd/dist/reset.css';
+import "./i18n";
 
 async function prepare() {
     try {

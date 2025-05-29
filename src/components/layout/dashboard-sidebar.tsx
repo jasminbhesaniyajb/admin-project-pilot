@@ -3,6 +3,7 @@ import { Menu, Drawer } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LogoutOutlined } from "@ant-design/icons";
 import { SIDEBAR_MENU_ITEMS } from "../../constants";
+import { useTranslation } from "react-i18next";
 
 interface DashboardSidebarProps {
   collapsed: boolean;
@@ -21,6 +22,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const getSelectedKey = () => {
     const currentPath = location.pathname;
@@ -56,10 +58,10 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     }
   };
 
-  const antSIDEBAR_MENU_ITEMS = SIDEBAR_MENU_ITEMS.map((item) => ({
+  const sidebarMenu = SIDEBAR_MENU_ITEMS.map((item) => ({
     key: item.key,
     icon: item.icon,
-    label: <span className="menu-item-text">{item.label}</span>,
+    label: <span className="menu-item-text">{t(item.key)}</span>,
     onClick: () => handleMenuClick(item.key),
   }));
 
@@ -69,7 +71,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
         mode="inline"
         selectedKeys={getSelectedKey()}
         className={`sidebar-menu ${collapsed && !isMobile ? "collapsed" : ""}`}
-        items={antSIDEBAR_MENU_ITEMS}
+        items={sidebarMenu}
         inlineCollapsed={collapsed && !isMobile}
         style={{
           border: "none",
@@ -79,13 +81,9 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
       />
 
       <div className="sidebar-footer">
-        <button
-          className={`logout-btn `}
-          onClick={onLogout}
-          title="Logout"
-        >
+        <button className={`logout-btn `} onClick={onLogout} title="Logout">
           <LogoutOutlined />
-          {!collapsed && !isMobile && <span>Logout</span>}
+          {!collapsed && !isMobile && <span>{t("logout")}</span>}
         </button>
       </div>
     </div>

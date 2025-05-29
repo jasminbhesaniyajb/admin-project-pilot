@@ -1,12 +1,15 @@
 import { Card, Col, Row, Statistic } from "antd";
-import Chart from "react-apexcharts"
+import Chart from "react-apexcharts";
 import {
   ProjectOutlined,
   DollarOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 function DashboardHome() {
+  const { t } = useTranslation();
+
   const chartOptions = {
     chart: {
       id: "project-estimation",
@@ -26,14 +29,14 @@ function DashboardHome() {
     legend: {
       position: "top",
     },
-  }
+  };
 
   const chartSeries = [
     {
       name: "Projects",
       data: [10, 15, 14, 20, 18, 22],
     },
-  ]
+  ];
 
   return (
     <>
@@ -41,7 +44,7 @@ function DashboardHome() {
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="Total Projects"
+              title={t("totalProjects")}
               value={28}
               prefix={<ProjectOutlined />}
               valueStyle={{ color: "#1890ff" }}
@@ -51,7 +54,7 @@ function DashboardHome() {
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="Active Projects"
+              title={t("activeProjects")}
               value={15}
               prefix={<UserOutlined />}
               valueStyle={{ color: "#52c41a" }}
@@ -61,7 +64,7 @@ function DashboardHome() {
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="Total Revenue"
+              title={t("totalRevenue")}
               value={125000}
               prefix={<DollarOutlined />}
               precision={2}
@@ -72,7 +75,7 @@ function DashboardHome() {
         <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
-              title="Pending Estimates"
+              title={t("pendingEstimates")}
               value={8}
               valueStyle={{ color: "#f5222d" }}
             />
@@ -80,7 +83,7 @@ function DashboardHome() {
         </Col>
       </Row>
 
-       {/* Line Chart Section */}
+      {/* Line Chart Section */}
       <Card title="Projects (Last 6 Months)" style={{ marginBottom: "24px" }}>
         <Chart
           options={chartOptions}

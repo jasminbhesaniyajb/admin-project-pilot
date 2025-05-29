@@ -1,0 +1,12 @@
+{
+  "login": "Connexion",
+  "logout": "Déconnexion",
+  "projectPilot": "Projet pilote",
+  "dashboard": "Tableau de bord",
+  "projects": "Projets",
+  "estimates": "Estimations",
+  "totalProjects": "Total des projets",
+  "activeProjects": "Projets actifs",
+  "totalRevenue": "Revenu total",
+  "pendingEstimates": "Estimations en attente"
+}
