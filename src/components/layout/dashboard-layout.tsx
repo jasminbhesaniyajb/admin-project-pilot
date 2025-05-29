@@ -4,14 +4,13 @@ import DashboardSidebar from "./dashboard-sidebar";
 import DashboardHeader from "./dashboard-header";
 import { Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { clearAuth } from "../../utils";
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
 
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({
-  children,
-}) => {
+const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -59,9 +58,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    sessionStorage.clear();
-
+    clearAuth();
     navigate("/login");
   };
 

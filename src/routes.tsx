@@ -10,13 +10,14 @@ import NotFound from "./pages/not-found";
 import AddProject from "./pages/dashboard/projects/add/add-project";
 import EditProject from "./pages/dashboard/projects/edit/edit-project";
 import ForgotPasswordForm from "./pages/auth/forgot-password";
+import { getToken } from "./utils";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const isAuthenticated = localStorage.getItem("authToken");
+  const isAuthenticated = getToken();
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -24,9 +25,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-// Public Route Component (redirect if already authenticated)
 const PublicRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const isAuthenticated = localStorage.getItem("authToken");
+  const isAuthenticated = getToken();
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -63,9 +63,9 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <PublicRoute>
+      <ProtectedRoute>
         <DashboardLayout />
-      </PublicRoute>
+      </ProtectedRoute>
     ),
     children: [
       {
@@ -77,9 +77,9 @@ export const router = createBrowserRouter([
   {
     path: "/projects",
     element: (
-      <PublicRoute>
+      <ProtectedRoute>
         <DashboardLayout />
-      </PublicRoute>
+      </ProtectedRoute>
     ),
     children: [
       {
