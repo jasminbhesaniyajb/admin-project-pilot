@@ -3,6 +3,7 @@ import { Dropdown, Space, Avatar } from "antd";
 import { MenuOutlined, LogoutOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Link } from "react-router-dom";
+import { getUser } from "../../utils";
 
 interface DashboardHeaderProps {
   onToggleSidebar: () => void;
@@ -13,6 +14,8 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onToggleSidebar,
   onLogout,
 }) => {
+  const user: any = getUser()
+  
   const userMenuItems: MenuProps["items"] = [
     {
       key: "logout",
@@ -67,14 +70,9 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             >
               <div className="user-dropdown">
                 <div className="user-info">
-                  <Avatar
-                    size={32}
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=32&h=32&fit=crop&crop=face"
-                    alt="Harley"
-                  />
+                  <Avatar size={32}>{user.userName.charAt(0)}</Avatar>
                   <div className="user-details">
-                    <div className="user-name">Harley</div>
-                    <div className="user-role">Admin</div>
+                    <div className="user-name">{user.userName}</div>
                   </div>
                 </div>
               </div>
