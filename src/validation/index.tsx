@@ -49,3 +49,8 @@ export const projectFormSchema = z.object({
   status: z.string().min(1, "Status is required"),
   email: z.string().email("Invalid email address"),
 });
+
+export const forgotPasswordFormSchema = z.object({
+  email: z.string().email("Enter a valid email"),
+  newPassword: z.string().min(6, "Password must be at least 6 characters"),
+})

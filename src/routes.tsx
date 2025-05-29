@@ -9,6 +9,7 @@ import Estimation from "./pages/dashboard/estimation";
 import NotFound from "./pages/not-found";
 import AddProject from "./pages/dashboard/projects/add/add-project";
 import EditProject from "./pages/dashboard/projects/edit/edit-project";
+import ForgotPasswordForm from "./pages/auth/forgot-password";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -48,6 +49,14 @@ export const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <SignupForm />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/forgot-password",
+    element: (
+      <PublicRoute>
+        <ForgotPasswordForm />
       </PublicRoute>
     ),
   },
@@ -94,6 +103,12 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </ProtectedRoute>
     ),
+     children: [
+      {
+        index: true,
+        element: <Estimation />,
+      },
+    ],
   },
   {
     path: "*",

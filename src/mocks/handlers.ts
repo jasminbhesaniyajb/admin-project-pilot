@@ -1,8 +1,17 @@
 import { http } from 'msw'
 
-const users: any = [
+let users: any = [
   { email: 'jasmin@gmail.com', password: '123456', userName: 'Jasmin' }
 ]
+
+export const updatePassword = (email: string, newPassword: string) => {
+  const user = users.find(u => u.email === email);
+  if (user) {
+    user.password = newPassword;
+    return true;
+  }
+  return false;
+};
 
 export const handlers = [
   // Register
@@ -48,4 +57,17 @@ export const handlers = [
       { status: 200 }
     )
   }),
+
+  // Forgot Password handler
+  http.post('/api/forgot-password', async ({ request }: any) => {
+    const { email, newPassword } = await request.json();
+
+    const updated = updatePassword(email, newPassword);
+
+    if (!updated) {
+      return new Response(JSON.stringify({ message: 'User not found' }), { status: 404 });
+    }
+
+    return new Response(JSON.stringify({ message: 'Password updated successfully' }), { status: 200 });
+  })
 ]

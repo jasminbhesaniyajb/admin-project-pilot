@@ -1,7 +1,40 @@
 import { Card, Col, Row, Statistic } from "antd";
-import React from "react";
+import Chart from "react-apexcharts"
+import {
+  ProjectOutlined,
+  DollarOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 function DashboardHome() {
+  const chartOptions = {
+    chart: {
+      id: "project-estimation",
+      type: "line",
+      toolbar: { show: false },
+    },
+    xaxis: {
+      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    },
+    stroke: {
+      curve: "smooth",
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    colors: ["#1890ff", "#faad14"],
+    legend: {
+      position: "top",
+    },
+  }
+
+  const chartSeries = [
+    {
+      name: "Projects",
+      data: [10, 15, 14, 20, 18, 22],
+    },
+  ]
+
   return (
     <>
       <Row gutter={[16, 16]} style={{ marginBottom: "24px" }}>
@@ -10,7 +43,7 @@ function DashboardHome() {
             <Statistic
               title="Total Projects"
               value={28}
-            //   prefix={<ProjectOutlined />}
+              prefix={<ProjectOutlined />}
               valueStyle={{ color: "#1890ff" }}
             />
           </Card>
@@ -20,7 +53,7 @@ function DashboardHome() {
             <Statistic
               title="Active Projects"
               value={15}
-            //   prefix={<UserOutlined />}
+              prefix={<UserOutlined />}
               valueStyle={{ color: "#52c41a" }}
             />
           </Card>
@@ -30,7 +63,7 @@ function DashboardHome() {
             <Statistic
               title="Total Revenue"
               value={125000}
-            //   prefix={<DollarOutlined />}
+              prefix={<DollarOutlined />}
               precision={2}
               valueStyle={{ color: "#faad14" }}
             />
@@ -46,6 +79,16 @@ function DashboardHome() {
           </Card>
         </Col>
       </Row>
+
+       {/* Line Chart Section */}
+      <Card title="Projects (Last 6 Months)" style={{ marginBottom: "24px" }}>
+        <Chart
+          options={chartOptions}
+          series={chartSeries}
+          type="line"
+          height={350}
+        />
+      </Card>
 
       <Card title="Recent Activities" style={{ marginBottom: "24px" }}>
         <p>Recent project updates and activities will be displayed here.</p>
