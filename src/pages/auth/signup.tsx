@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Button, Card, Typography, Space, Divider } from "antd";
+import { Input, Card, Typography, Space, Divider } from "antd";
 import {
   LockOutlined,
   EyeTwoTone,
@@ -98,7 +98,7 @@ const SignupForm: React.FC = () => {
               <ErrorMessage message={errors?.password?.message} />
             </div>
 
-            <BaseButton label="Sign Up" />
+            <BaseButton label="Sign Up" loading={isSubmitting} />
           </Space>
         </form>
 

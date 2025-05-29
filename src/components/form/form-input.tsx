@@ -1,8 +1,8 @@
 import React from "react";
 import { Input } from "antd";
 import ErrorMessage from "./error-message";
-
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+import type { InputProps } from "antd"; 
+interface FormInputProps extends InputProps  {
   error?: string | undefined;
   prefixIcon?: React.ReactNode;
   className?: string;
