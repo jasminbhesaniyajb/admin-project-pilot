@@ -1,12 +1,10 @@
 import { ConfigProvider } from "antd";
 import "./App.css";
-import { BrowserRouter, useRoutes } from "react-router-dom";
-import routes from "./routes";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
+import { router } from "./routes";
 
 function App() {
-  const AppRoutes = () => useRoutes(routes);
   return (
-    <BrowserRouter>
       <ConfigProvider
         theme={{
           token: {
@@ -31,9 +29,9 @@ function App() {
           },
         }}
       >
-        <AppRoutes />
+        {/* <AppRoutes /> */}
+        <RouterProvider router={router} />
       </ConfigProvider>
-    </BrowserRouter>
   );
 }
 
