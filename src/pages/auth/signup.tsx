@@ -98,7 +98,7 @@ const SignupForm: React.FC = () => {
               <ErrorMessage message={errors?.password?.message} />
             </div>
 
-            <BaseButton label="Sign Up" loading={isSubmitting} />
+            <BaseButton label="Sign Up" loading={isSubmitting} className="w-full" />
           </Space>
         </form>
 

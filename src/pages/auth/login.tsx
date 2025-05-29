@@ -98,7 +98,7 @@ const LoginForm: React.FC = () => {
                   </a>
                 </Text>
 
-                <BaseButton label="Sign In" />
+                <BaseButton label="Sign In" className="w-full" />
               </Space>
             </form>
 

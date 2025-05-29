@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import DashboardSidebar from "./dashboard-sidebar";
 import DashboardHeader from "./dashboard-header";
 import { Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 interface DashboardLayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
@@ -89,7 +89,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             !isMobile && sidebarCollapsed ? "sidebar-collapsed" : ""
           }`}
         >
-          {children}
+          {/* {children} */}
+          <Outlet />
         </div>
       </div>
 

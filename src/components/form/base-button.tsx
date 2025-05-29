@@ -14,7 +14,7 @@ export interface BaseButtonProps extends ButtonProps {
 const BaseButton: React.FC<BaseButtonProps> = ({
   label,
   type = "primary",
-  htmlType = "submit",
+  htmlType = "button",
   size = "large",
   loading = false,
   className,

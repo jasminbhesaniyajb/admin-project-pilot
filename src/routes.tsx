@@ -1,41 +1,42 @@
-import React from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import LoginForm from './pages/auth/login';
-import SignupForm from './pages/auth/signup';
-import DashboardLayout from './components/layout/dashboard-layout';
-import DashboardHome from './pages/dashboard/dashboard-home';
-import Projects from './pages/dashboard/projects';
-import Estimation from './pages/dashboard/estimation';
-import NotFound from './pages/not-found';
+import React from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import LoginForm from "./pages/auth/login";
+import SignupForm from "./pages/auth/signup";
+import DashboardLayout from "./components/layout/dashboard-layout";
+import DashboardHome from "./pages/dashboard/dashboard-home";
+import Projects from "./pages/dashboard/projects/projects";
+import Estimation from "./pages/dashboard/estimation";
+import NotFound from "./pages/not-found";
+import AddProject from "./pages/dashboard/projects/add/add-project";
+import EditProject from "./pages/dashboard/projects/edit/edit-project";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const isAuthenticated = localStorage.getItem('authToken'); 
+  const isAuthenticated = localStorage.getItem("authToken");
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
 // Public Route Component (redirect if already authenticated)
 const PublicRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const isAuthenticated = localStorage.getItem('authToken');
-  
+  const isAuthenticated = localStorage.getItem("authToken");
+
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
-  
+
   return <>{children}</>;
 };
 
 export const router = createBrowserRouter([
-  
   {
-    path: '/login',
+    path: "/login",
     element: (
       <PublicRoute>
         <LoginForm />
@@ -43,7 +44,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: '/signup',
+    path: "/signup",
     element: (
       <PublicRoute>
         <SignupForm />
@@ -51,7 +52,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: '/',
+    path: "/",
     element: (
       <PublicRoute>
         <DashboardLayout>
@@ -61,17 +62,29 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: '/projects',
+    path: "/projects",
     element: (
       <PublicRoute>
-        <DashboardLayout>
-          <Projects />
-        </DashboardLayout>
+        <DashboardLayout />
       </PublicRoute>
     ),
+    children: [
+      {
+        index: true,
+        element: <Projects />,
+      },
+      {
+        path: "add",
+        element: <AddProject />,
+      },
+      {
+        path: "edit/:id",
+        element: <EditProject />,
+      },
+    ],
   },
   {
-    path: '/estimates',
+    path: "/estimates",
     element: (
       <ProtectedRoute>
         <DashboardLayout>
@@ -81,7 +94,7 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: '*',
+    path: "*",
     element: <NotFound />,
   },
 ]);

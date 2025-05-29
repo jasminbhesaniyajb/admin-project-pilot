@@ -19,11 +19,19 @@ function App() {
               labelColor: "#262626",
             },
             Input: {
-              controlHeight: 48,
+              controlHeight: 40,
+              fontSize: 16,
+            },
+            Select: {
+              controlHeight: 40,
+              fontSize: 16,
+            },
+            DatePicker: {
+              controlHeight: 40,
               fontSize: 16,
             },
             Button: {
-              controlHeight: 48,
+              controlHeight: 40,
               fontSize: 16,
             },
           },

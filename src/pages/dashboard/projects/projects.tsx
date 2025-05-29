@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Button, Space, Tag, Card } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import DataTable from "../../components/data-table";
+import DataTable from "../../../components/data-table";
+import BaseButton from "../../../components/form/base-button";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   key: string;
@@ -17,6 +19,7 @@ interface User {
 const Projects: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -129,7 +132,10 @@ const Projects: React.FC = () => {
 
   return (
     <Card title="Projects Management">
-      <div>Filters</div>
+      <div className="flex justify-between items-center mb-4">
+        <div>Filter</div>
+        <BaseButton label="Add Project" type="primary" onClick={() => navigate("/projects/add")} />
+      </div>
       <DataTable
         columns={columns}
         dataSource={users}
