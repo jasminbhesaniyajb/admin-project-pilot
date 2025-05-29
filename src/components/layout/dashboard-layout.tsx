@@ -1,43 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DashboardSidebar from './dashboard-sidebar';
-import DashboardHeader from './dashboard-header';
-import { Modal } from 'antd';
-import { 
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import DashboardSidebar from "./dashboard-sidebar";
+import DashboardHeader from "./dashboard-header";
+import { Modal } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  title?: string;
-  rightContent?: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
-  title,
-  rightContent
 }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-    const [isLogoutModalVisible, setIsLogoutModalVisible] = useState<boolean>(false);
-  
+  const [isLogoutModalVisible, setIsLogoutModalVisible] =
+    useState<boolean>(false);
+
   const navigate = useNavigate();
 
-  // Check if screen is mobile
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth <= 768);
-      // Auto close mobile drawer when switching to desktop
       if (window.innerWidth > 768) {
         setMobileDrawerOpen(false);
       }
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   const handleToggleSidebar = () => {
@@ -52,7 +45,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     setMobileDrawerOpen(false);
   };
 
-   const showLogoutModal = (): void => {
+  const showLogoutModal = (): void => {
     setIsLogoutModalVisible(true);
   };
 
@@ -66,46 +59,41 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     sessionStorage.clear();
-    
-    navigate('/login');
+
+    navigate("/login");
   };
 
   return (
-    <> 
-    <div className="dashboard-layout">
-      {/* Header */}
-      <DashboardHeader
-        onToggleSidebar={handleToggleSidebar}
-        onLogout={showLogoutModal}
-      />
+    <>
+      <div className="dashboard-layout">
+        {/* Header */}
+        <DashboardHeader
+          onToggleSidebar={handleToggleSidebar}
+          onLogout={showLogoutModal}
+        />
 
-      {/* Sidebar */}
-      <DashboardSidebar
-        collapsed={sidebarCollapsed}
-        mobileOpen={mobileDrawerOpen}
-        isMobile={isMobile}
-        onClose={handleCloseMobileDrawer}
-        onLogout={showLogoutModal}
-      />
+        {/* Sidebar */}
+        <DashboardSidebar
+          collapsed={sidebarCollapsed}
+          mobileOpen={mobileDrawerOpen}
+          isMobile={isMobile}
+          onClose={handleCloseMobileDrawer}
+          onLogout={showLogoutModal}
+        />
 
-      {/* Main Content */}
-      <div className={`dashboard-content ${!isMobile && sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        {(title || rightContent) && (
-          <div className="content-header">
-            {title && <h1 className="content-title">{title}</h1>}
-            {rightContent && <div>{rightContent}</div>}
-          </div>
-        )}
-        
-        <div className="content-body">
+        {/* Main Content */}
+        <div
+          className={`dashboard-content ${
+            !isMobile && sidebarCollapsed ? "sidebar-collapsed" : ""
+          }`}
+        >
           {children}
         </div>
       </div>
-    </div>
 
-          {/* Logout Confirmation Modal */}
+      {/* Logout Confirmation Modal */}
       <Modal
         title={
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>

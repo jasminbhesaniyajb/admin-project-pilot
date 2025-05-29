@@ -2,7 +2,7 @@ import React from "react";
 import { Menu, Drawer } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LogoutOutlined } from "@ant-design/icons";
-import { sidebarMenuItems } from "../../constants";
+import { SIDEBAR_MENU_ITEMS } from "../../constants";
 
 interface DashboardSidebarProps {
   collapsed: boolean;
@@ -25,14 +25,14 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   const getSelectedKey = () => {
     const currentPath = location.pathname;
 
-    const exactMatch = sidebarMenuItems.find(
+    const exactMatch = SIDEBAR_MENU_ITEMS.find(
       (item) => item.path === currentPath
     );
     if (exactMatch) {
       return [exactMatch.key];
     }
 
-    const partialMatch = sidebarMenuItems.find(
+    const partialMatch = SIDEBAR_MENU_ITEMS.find(
       (item) =>
         item.path !== "/" &&
         currentPath.startsWith(item.path) &&
@@ -47,7 +47,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   };
 
   const handleMenuClick = (key: string) => {
-    const menuItem = sidebarMenuItems.find((item) => item.key === key);
+    const menuItem = SIDEBAR_MENU_ITEMS.find((item) => item.key === key);
     if (menuItem) {
       navigate(menuItem.path);
       if (isMobile) {
@@ -56,7 +56,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     }
   };
 
-  const antsidebarMenuItems = sidebarMenuItems.map((item) => ({
+  const antSIDEBAR_MENU_ITEMS = SIDEBAR_MENU_ITEMS.map((item) => ({
     key: item.key,
     icon: item.icon,
     label: <span className="menu-item-text">{item.label}</span>,
@@ -69,7 +69,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
         mode="inline"
         selectedKeys={getSelectedKey()}
         className={`sidebar-menu ${collapsed && !isMobile ? "collapsed" : ""}`}
-        items={antsidebarMenuItems}
+        items={antSIDEBAR_MENU_ITEMS}
         inlineCollapsed={collapsed && !isMobile}
         style={{
           border: "none",
@@ -79,9 +79,13 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
       />
 
       <div className="sidebar-footer">
-        <button className="logout-btn" onClick={onLogout} title="Logout">
+        <button
+          className={`logout-btn `}
+          onClick={onLogout}
+          title="Logout"
+        >
           <LogoutOutlined />
-          <span>Logout</span>
+          {!collapsed && !isMobile && <span>Logout</span>}
         </button>
       </div>
     </div>

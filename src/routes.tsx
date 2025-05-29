@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
     path: '/',
     element: (
       <PublicRoute>
-        <DashboardLayout title="Dashboard">
+        <DashboardLayout>
           <DashboardHome />
         </DashboardLayout>
       </PublicRoute>
@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
     path: '/projects',
     element: (
       <PublicRoute>
-        <DashboardLayout title="Projects">
+        <DashboardLayout>
           <Projects />
         </DashboardLayout>
       </PublicRoute>
@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
     path: '/estimates',
     element: (
       <ProtectedRoute>
-        <DashboardLayout title="Estimates">
+        <DashboardLayout>
           <Estimation />
         </DashboardLayout>
       </ProtectedRoute>
