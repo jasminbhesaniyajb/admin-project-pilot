@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Typography, Divider, Input, Space } from "antd";
+import { Card, Typography, Divider, Input, Space, message } from "antd";
 import {
   LockOutlined,
   EyeInvisibleOutlined,
@@ -10,16 +10,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginFormSchema, type LoginFormValues } from "../../validation";
 import ErrorMessage from "../../components/form/error-message";
 import FormInput from "../../components/form/form-input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BaseButton from "../../components/form/base-button";
+import { login } from "../../api/auth";
+import { setToken, setUser } from "../../utils";
 
 const { Title, Text } = Typography;
 
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
@@ -28,15 +32,27 @@ const LoginForm: React.FC = () => {
     },
   });
 
-  const onSubmit = (values: LoginFormValues) => {
-    console.log("Login form submitted:", values);
-    // Handle login logic here
+  const onSubmit = async (values: LoginFormValues) => {
+    try {
+      const response = await login(values);
+      if (response.status === 401) {
+        message.error(response.data.message || "Invalid email or password");
+        return;
+      }
+      if (response.status === 200) {
+        const { token, user } = response.data;
+        setToken(token);
+        setUser(user);
+        message.success(response.data.message);
+        navigate("/");
+      }
+    } catch (error: any) {
+      message.error(error || "Login failed. Please try again.");
+    }
   };
 
   return (
-    <div
-      className="form-container"
-    >
+    <div className="form-container">
       <div className="form-card">
         <Card style={{ borderRadius: "12px" }}>
           <Space direction="vertical" size="small" style={{ width: "100%" }}>
@@ -66,7 +82,7 @@ const LoginForm: React.FC = () => {
                       <FormInput
                         {...field}
                         placeholder="Enter your email"
-                        error={errors.email?.message}
+                        error={errors?.email?.message}
                         label="Email"
                       />
                     )}
@@ -74,6 +90,7 @@ const LoginForm: React.FC = () => {
                 </div>
 
                 <div>
+                  <label>Password</label>
                   <Controller
                     name="password"
                     control={control}
@@ -85,7 +102,7 @@ const LoginForm: React.FC = () => {
                         iconRender={(visible) =>
                           visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                         }
-                        status={errors.password ? "error" : ""}
+                        status={errors?.password ? "error" : ""}
                       />
                     )}
                   />
@@ -98,7 +115,12 @@ const LoginForm: React.FC = () => {
                   </a>
                 </Text>
 
-                <BaseButton label="Sign In" className="w-full" />
+                <BaseButton
+                  htmlType="submit"
+                  label="Sign In"
+                  className="w-full"
+                  loading={isSubmitting}
+                />
               </Space>
             </form>
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Card, Typography, Space, Divider } from "antd";
+import { Input, Card, Typography, Space, Divider, message } from "antd";
 import {
   LockOutlined,
   EyeTwoTone,
@@ -7,15 +7,18 @@ import {
 } from "@ant-design/icons";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signupFormSchema, type SignupFormData } from "../../validation";
 import FormInput from "../../components/form/form-input";
 import ErrorMessage from "../../components/form/error-message";
 import BaseButton from "../../components/form/base-button";
+import { signup } from "../../api/auth";
 
 const { Title, Text } = Typography;
 
 const SignupForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
@@ -23,14 +26,20 @@ const SignupForm: React.FC = () => {
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupFormSchema),
     mode: "onChange",
+    defaultValues: {
+      email: "",
+      username: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (data: SignupFormData) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Signup data:", data);
-    } catch (error) {
-      console.error("Signup failed:", error);
+      const response = await signup(data);
+      message.success(response.data.message);
+      navigate("/login");
+    } catch (error: any) {
+      message.error(error || "Please try again.");
     }
   };
 
@@ -98,7 +107,7 @@ const SignupForm: React.FC = () => {
               <ErrorMessage message={errors?.password?.message} />
             </div>
 
-            <BaseButton label="Sign Up" loading={isSubmitting} className="w-full" />
+            <BaseButton htmlType="submit" label="Sign Up" loading={isSubmitting} className="w-full" />
           </Space>
         </form>
 

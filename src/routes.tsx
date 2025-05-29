@@ -55,11 +55,15 @@ export const router = createBrowserRouter([
     path: "/",
     element: (
       <PublicRoute>
-        <DashboardLayout>
-          <DashboardHome />
-        </DashboardLayout>
+        <DashboardLayout />
       </PublicRoute>
     ),
+    children: [
+      {
+        index: true,
+        element: <DashboardHome />,
+      },
+    ],
   },
   {
     path: "/projects",
@@ -87,9 +91,7 @@ export const router = createBrowserRouter([
     path: "/estimates",
     element: (
       <ProtectedRoute>
-        <DashboardLayout>
-          <Estimation />
-        </DashboardLayout>
+        <DashboardLayout />
       </ProtectedRoute>
     ),
   },
