@@ -54,3 +54,30 @@ export const forgotPasswordFormSchema = z.object({
   email: z.string().email("Enter a valid email"),
   newPassword: z.string().min(6, "Password must be at least 6 characters"),
 })
+
+
+export const estimateItemSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  // description: z.string().min(1, "Description is required"),
+  unit: z.string().min(1, "Unit is required"),
+  quantity: z
+    .string({ required_error: "Quantity is required" })
+    .min(1, "Quantity must be at least 1"),
+  price: z
+    .string({ required_error: "Price is required" })
+    .min(0, "Price must be at least 0"),
+  margin: z
+    .string({ required_error: "Margin is required" })
+    .min(0, "Margin must be at least 0"),
+});
+
+export const sectionSchema = z.object({
+  sectionTitle: z.string().min(1, "Section title is required"),
+  items: z.array(estimateItemSchema).min(1, "At least one item is required"),
+});
+
+export const estimateFormSchema = z.object({
+  sections: z.array(sectionSchema).min(1, "At least one section is required"),
+});
+
+export type EstimateFormSchema = z.infer<typeof estimateFormSchema>;

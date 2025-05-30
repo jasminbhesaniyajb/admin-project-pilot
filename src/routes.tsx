@@ -5,12 +5,13 @@ import SignupForm from "./pages/auth/signup";
 import DashboardLayout from "./components/layout/dashboard-layout";
 import DashboardHome from "./pages/dashboard/dashboard-home";
 import Projects from "./pages/dashboard/projects/projects";
-import Estimation from "./pages/dashboard/estimation";
+import Estimation from "./pages/dashboard/estimation/estimation";
 import NotFound from "./pages/not-found";
 import AddProject from "./pages/dashboard/projects/add/add-project";
 import EditProject from "./pages/dashboard/projects/edit/edit-project";
 import ForgotPasswordForm from "./pages/auth/forgot-password";
 import { getToken } from "./utils";
+import AddEstimation from "./pages/dashboard/estimation/add/add-estimation";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -107,6 +108,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Estimation />,
+      },
+      {
+        path: "add",
+        element: <AddEstimation />,
       },
     ],
   },

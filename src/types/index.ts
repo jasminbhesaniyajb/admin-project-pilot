@@ -40,3 +40,21 @@ export interface Staff {
   id: string;
   name: string;
 }
+
+export interface EstimateItem {
+  title: string;
+  description?: string;
+  unit: string;
+  quantity: number;
+  price: number;
+  margin: number;
+}
+
+export interface EstimateSection {
+  name: string;
+  items: EstimateItem[];
+}
+
+export interface EstimateFormValues {
+  sections: EstimateSection[];
+}
