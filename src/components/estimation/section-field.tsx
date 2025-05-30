@@ -77,7 +77,13 @@ export default function SectionField({
           itemIndex={itemIndex}
           removeItem={() => remove(itemIndex)}
           addItem={() =>
-            append({ title: "", unit: "", quantity: 1, price: 10, margin: 0 })
+            append({
+              title: "",
+              unit: "",
+              quantity: "1",
+              price: "10",
+              margin: "0",
+            })
           }
         />
       ))}

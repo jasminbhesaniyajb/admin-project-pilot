@@ -1,20 +1,23 @@
-import { Card, Divider } from "antd";
+import { Card, Divider, message } from "antd";
 import {
   FormProvider,
   useFieldArray,
   useForm,
   useWatch,
 } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { estimateFormSchema, type EstimateFormSchema } from "../../validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SectionField from "./section-field";
 import BaseButton from "../form/base-button";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useAppDispatch } from "../../hooks/redux-hooks";
+import { setEstimateData } from "../../store/estimate-slice";
 
 function EstimationForm() {
   const { id } = useParams<{ id?: string }>();
-  const [estimationForm, setEstimationForm] = useState();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const methods = useForm<EstimateFormSchema>({
     resolver: zodResolver(estimateFormSchema),
@@ -65,7 +68,9 @@ function EstimationForm() {
   }, [sections]);
 
   const onSubmit = (data: EstimateFormSchema) => {
-    setEstimationForm(data);
+    dispatch(setEstimateData({ sections: data.sections }));
+    navigate("/estimates");
+    message.success("Estimate submitted successfully!");
   };
 
   return (
@@ -126,21 +131,6 @@ function EstimationForm() {
             style={{ marginTop: 16 }}
           />
         </form>
-
-        {estimationForm && (
-          <div
-            style={{
-              backgroundColor: "#f9f9f9",
-              padding: "1rem",
-              borderRadius: "4px",
-              fontFamily: "monospace",
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            <h3>Submitted Form</h3>
-            {JSON.stringify(estimationForm, null, 2)}
-          </div>
-        )}
       </Card>
     </FormProvider>
   );
