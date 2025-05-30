@@ -51,6 +51,8 @@ No extra steps needed to run — the mock will automatically intercept relevant 
 ### Features
 Auth: login, signUp, forgot-password
 
+implement private and public route
+
 multi-language support
 
 Dashboard: Overview of system statistics and interactive charts.
